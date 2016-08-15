@@ -2,3 +2,5 @@ var asdf
 asdf = 1
 var hi
 hi = 2
+var bye 
+bye = 3
