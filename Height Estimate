@@ -1,0 +1,46 @@
+var cameraHeight, baseAngle, apexAngle, distance, looper = 0
+
+//Loop entire program indefinitely
+
+while (looper=0)
+    {
+        //Receive sensor input
+        
+        //Receive user Input
+        
+        //Check possible angles, Calculate if correct
+        if (0 < baseAngle < 2 * Math.PI)
+            {
+                if (0 < apexAngle < 2 * Math.PI)
+                    {    
+                        if (apexAngle > baseAngle)
+                            {
+                                //Calculate Building Height and Distance
+                            }
+                    }
+            }
+        
+        //Throw up errors if angles are wrong
+        if (baseAngle < 0 || 2 * Math.PI < baseAngle)
+            {
+                //Display error: Base angle must be inbetween 0 and 180
+            }
+        if (apexAngle < 0 || 2 * Math.PI < apexAngle)
+            {
+                //Display error: Apex angle must be inbetween 0 and 180
+            }
+        if (apexAngle < baseAngle)
+            {
+                //Display error: Building apex must be higher than base- consider reversing
+            }
+        
+        //Check calculations and display if correct
+        if (distance > 0)
+            {
+                //Display distance and height
+            }
+        else
+            {
+                //Display error: Distance < 0, please check and reenter inputs
+            }
+    }
