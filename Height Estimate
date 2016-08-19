@@ -23,15 +23,15 @@ while (looper=0)
         //Throw up errors if angles are wrong
         if (baseAngle < 0 || 2 * Math.PI < baseAngle)
             {
-                //Display error: Base angle must be inbetween 0 and 180
+                cameraVideoPage.displayMessage("Base angle must be inbetween 0° and 180°", 3);
             }
         if (apexAngle < 0 || 2 * Math.PI < apexAngle)
             {
-                //Display error: Apex angle must be inbetween 0 and 180
+                cameraVideoPage.displayMessage("Apex angle must be inbetween 0° and 180°", 3);
             }
         if (apexAngle < baseAngle)
             {
-                //Display error: Building apex must be higher than base- consider reversing
+                cameraVideoPage.displayMessage("Building apex must be higher than base- consider reversing", 3);
             }
         
         //Check calculations and display if correct
