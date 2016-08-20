@@ -17,94 +17,83 @@
 var cameraVideoPage = new CameraVideoPageController(
         cameraVideoPageInitialised);
 
+var cameraHeight, /*baseAngle = 50, apexAngle =  100*/ heightOfUser = 1.8, distance, height, looper = 0
+var cameraVideoPage = new CameraVideoPageController(
+        cameraVideoPageInitialised);
+//Loop entire program indefinitely
+
+//while (looper = 1)
+ //   {
+        //Receive sensor input
+        
+        //Receive user Input
 // You may need to create variables to store state.
-window.addEventListener("deviceorientation", function(event) {
-    var alpha = event.alpha
-    var beta = event.beta
-    var gamma = event.gamma}, true);
+window.addEventListener("deviceorientation", handleOrientation, true);
 
-
-//function handleOrientation(event)
-//{
-   //var beta = event.beta;
-//}
-
-
-// This function will be called when the camera video page
-// is intialised and ready to be used.
-function cameraVideoPageInitialised()
+function handleOrientation(event)
 {
-    cameraVideoPage.setHeadsUpDisplayHTML("Angle: " + handleOrientation("deviceorientation"));
-    // Step 1: Check for and intialise deviceMotion
+    var alpha = event.alpha
+    var beta = [event.beta]
+    var gamma = event.gamma
+	cameraVideoPage.setHeadsUpDisplayHTML("beta:" + beta + "<br/>")      
 }
 
-function displayElementsWithClass(className, display)
-    {
-        var elements = document.getElementsByClassName(className);
-        
-        for (var i = 0; i < elements.length; i++)
-        {
-            if (display)
+//cameraVideoPage.setHeadsUpDisplayHTML("beta:" + beta + "<br/>")
+
+        //Check possible angles, Calculate if correct
+        if (0 < baseAngle && baseAngle < 180)
             {
-                elements[i].style.display = "block";
+                if (0 < apexAngle && apexAngle < 180)
+                    {    
+                        if (apexAngle > baseAngle)
+                            {
+                                distance = calculateDistanceToObject(baseAngle, heightOfUser);
+                                height = heightOfObject(distance, heightOfUser, apexAngle);
+                            }
+                    }
             }
-            else
+        
+        //Throw up errors if angles are wrong
+        if (baseAngle < 0 || 180 < baseAngle)
             {
-                elements[i].style.display = "none";
+                cameraVideoPage.displayMessage("Base angle must be inbetween 0° and 180°", 3);
             }
-        }
-    }
-
-function deviceOrientationUpdate(event)
-    {
-        if(event.beta==null)
-        {
-            displayElementsWithClass("compassValue", false);
-            displayElementsWithClass("webkitCompassValue", false);
-            displayElementsWithClass("compassError", true);
-            return;
-        }
-        displayElementsWithClass("compassValue", true);
-        displayElementsWithClass("compassError", false);
-
-        if (event.absolute)
-        {
-            var heading = compassHeading(event.beta);
-            document.getElementById("headingValue").innerHTML = Number(heading).toFixed(2);
-        }
-        else
-        {
-            document.getElementById("headingValue").innerHTML = "???";
-        }
+        if (apexAngle < 0 || 180 < apexAngle)
+            {
+                cameraVideoPage.displayMessage("Apex angle must be inbetween 0° and 180°", 3);
+            }
+        if (apexAngle < baseAngle)
+            {
+                cameraVideoPage.displayMessage("Building apex must be higher than base- consider reversing", 3);
+            }
         
-        document.getElementById("betaValue").innerHTML = Number(event.beta).toFixed(2);
-        
-        if (event.webkitCompassHeading != undefined)
-        {
-            displayElementsWithClass("webkitCompassValue", true);
-            document.getElementById("webkitHeadingValue").innerHTML = Number(event.webkitCompassHeading).toFixed(2);
-            document.getElementById("webkitAccuracyValue").innerHTML = Number(event.webkitCompassAccuracy).toFixed(2);
-        }
+        //Check calculations and display if correct
+        if (distance > 0)
+            {
+                cameraVideoPage.setHeadsUpDisplayHTML("Distance: " + distance + "</br>" + "Height: " + height);
+            }
         else
-        {
-            displayElementsWithClass("webkitCompassValue", false);
-        }
-    }
+            {
+                cameraVideoPage.displayMessage("Distance < 0, please check and reenter inputs", 5);
+            }
+//    }
+ 
+//Function to calculate distance from object
+function calculateDistanceToObject(beta, heightOfUser)
+{
+    angleToBase = beta * (Math.PI / 180) //Assuming that device screen up is 0 degrees, that's what my phone says atleast
+    distance = heightOfUser * Math.tan(angleToBase) // trig
+    return distance 
+}
 
-    if (window.DeviceOrientationEvent) 
-    {
-        displayElementsWithClass("compassError", false);
-        window.addEventListener('deviceorientation', deviceOrientationUpdate);
-    }
-    else
-    {
-        displayElementsWithClass("compassValue", false);
-    }
-
-deviceOrientationUpdate(event);
-
-cameraVideoPageInitialised();    
-
+//function to determine the height of the object
+function heightOfObject(distance, heightOfUser, beta)
+{
+    angleToApex = (Math.PI / 180) * (90 - beta) //minus 90 from beta value as 90 degrees is when phone is vertical, draw triangle to confirm angle is correct
+    heightObjectPartial = Math.tan(angleToApex) * distance // trig
+    heightOfObject = heightObjectPartial + heightOfUser // partial height plus height of user gives height of object
+    return heightOfObject
+}
 
 // This function is called by a button to set the height of phone from the
 // ground, in metres.
@@ -130,23 +119,8 @@ function setApexTiltAngle()
     // Step 4: Record tilt angle 
     // display on screen using the displayMessage method
 }
-
-
-
-//Function to calculate distance from object
-function calculateDistanceToObject(beta, heightOfUser)
+function cameraVideoPageInitialised(HTML)
 {
-    angleToBase = beta * (Math.PI / 180) //Assuming that device screen up is 0 degrees, that's what my phone says atleast
-    distance = heightOfUser * Math.tan(betaInRadians) // trig
-    return distance 
+    cameraVideoPage.setHeadsUpDisplayHTML(HTML);
+    // Step 1: Check for and intialise deviceMotion
 }
-
-//function to determine the height of the object
-function heightOfObject(distance, heightOfUser, beta)
-{
-    angleToApex = (Math.PI / 180) * (90 - beta) //minus 90 from beta value as 90 degrees is when phone is vertical, draw triangle to confirm angle is correct
-    heightObjectPartial = Math.tan(angleToApex) * distance // trig
-    heightOfObject = heightObjectPartial + heightOfUser // partial height plus height of user gives height of object
-    return heightOfObject
-}
-// You may need to write several other functions.
