@@ -127,4 +127,22 @@ function setApexTiltAngle()
     // display on screen using the displayMessage method
 }
 
+
+
+//Function to calculate distance from object
+function calculateDistanceToObject(beta, heightOfUser)
+{
+    angleToBase = beta * (Math.PI / 180) //Assuming that device screen up is 0 degrees, that's what my phone says atleast
+    distance = heightOfUser * Math.tan(betaInRadians) // trig
+    return distance 
+}
+
+//function to determine the height of the object
+function heightOfObject(distance, heightOfUser, beta)
+{
+    angleToApex = (Math.PI / 180) * (90 - beta) //minus 90 from beta value as 90 degrees is when phone is vertical, draw triangle to confirm angle is correct
+    heightObjectPartial = Math.tan(angleToApex) * distance // trig
+    heightOfObject = heightObjectPartial + heightOfUser // partial height plus height of user gives height of object
+    return heightOfObject
+}
 // You may need to write several other functions.
