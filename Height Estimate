@@ -1,31 +1,33 @@
-var cameraHeight, baseAngle, apexAngle, distance, looper = 0
-
+var cameraHeight, baseAngle = 50, apexAngle =  -5, heightOfUser = 1, distance, height, looper = 0
+var cameraVideoPage = new CameraVideoPageController(
+        cameraVideoPageInitialised);
 //Loop entire program indefinitely
 
-while (looper=0)
-    {
+//while (looper = 1)
+ //   {
         //Receive sensor input
         
         //Receive user Input
         
         //Check possible angles, Calculate if correct
-        if (0 < baseAngle < 2 * Math.PI)
+        if (0 < baseAngle && baseAngle < 180)
             {
-                if (0 < apexAngle < 2 * Math.PI)
+                if (0 < apexAngle && apexAngle < 180)
                     {    
                         if (apexAngle > baseAngle)
                             {
-                                //Calculate Building Height and Distance
+                                distance = calculateDistanceToObject(baseAngle, heightOfUser);
+                                height = heightOfObject(distance, heightOfUser, apexAngle);
                             }
                     }
             }
         
         //Throw up errors if angles are wrong
-        if (baseAngle < 0 || 2 * Math.PI < baseAngle)
+        if (baseAngle < 0 || 180 < baseAngle)
             {
                 cameraVideoPage.displayMessage("Base angle must be inbetween 0° and 180°", 3);
             }
-        if (apexAngle < 0 || 2 * Math.PI < apexAngle)
+        if (apexAngle < 0 || 180 < apexAngle)
             {
                 cameraVideoPage.displayMessage("Apex angle must be inbetween 0° and 180°", 3);
             }
@@ -37,11 +39,57 @@ while (looper=0)
         //Check calculations and display if correct
         if (distance > 0)
             {
-                //Display distance and height
+                cameraVideoPage.setHeadsUpDisplayHTML("Distance: " + distance + "</br>" + "Height: " + height);
             }
         else
             {
-                //Display error: Distance < 0, please check and reenter inputs
+                cameraVideoPage.displayMessage("Distance < 0, please check and reenter inputs", 5);
             }
-    }
+//    }
  
+//Function to calculate distance from object
+function calculateDistanceToObject(beta, heightOfUser)
+{
+    angleToBase = beta * (Math.PI / 180) //Assuming that device screen up is 0 degrees, that's what my phone says atleast
+    distance = heightOfUser * Math.tan(angleToBase) // trig
+    return distance 
+}
+
+//function to determine the height of the object
+function heightOfObject(distance, heightOfUser, beta)
+{
+    angleToApex = (Math.PI / 180) * (90 - beta) //minus 90 from beta value as 90 degrees is when phone is vertical, draw triangle to confirm angle is correct
+    heightObjectPartial = Math.tan(angleToApex) * distance // trig
+    heightOfObject = heightObjectPartial + heightOfUser // partial height plus height of user gives height of object
+    return heightOfObject
+}
+
+// This function is called by a button to set the height of phone from the
+// ground, in metres.
+function setCameraHeightValue()
+{
+    // Step 3: Set camera height
+    // check if input is a number and is positive
+    // display on screen using the displayMessage method
+}
+    
+// This function is called by a button to set the angle to the base of
+// the object being measured.  It uses the current smoothed tilt angle.
+function setBaseTiltAngle()
+{
+    // Step 4: Record tilt angle 
+    // display on screen using the displayMessage method
+}
+
+// This function is called by a button to set the angle to the apex of
+// the object being measured.  It uses the current smoothed tilt angle.
+function setApexTiltAngle()
+{
+    // Step 4: Record tilt angle 
+    // display on screen using the displayMessage method
+}
+function cameraVideoPageInitialised(HTML)
+{
+    cameraVideoPage.setHeadsUpDisplayHTML(HTML);
+    // Step 1: Check for and intialise deviceMotion
+}
