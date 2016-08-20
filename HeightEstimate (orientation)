@@ -18,12 +18,16 @@ var cameraVideoPage = new CameraVideoPageController(
         cameraVideoPageInitialised);
 
 // You may need to create variables to store state.
-window.addEventListener("deviceorientation", handleOrientation, true);
+window.addEventListener("deviceorientation", function(event) {
+    var alpha = event.alpha
+    var beta = event.beta
+    var gamma = event.gamma}, true);
 
-function handleOrientation(event)
-{
-   var beta = event.beta;
-}
+
+//function handleOrientation(event)
+//{
+   //var beta = event.beta;
+//}
 
 
 // This function will be called when the camera video page
