@@ -99,6 +99,17 @@ function heightOfObject(distance, heightOfUser, beta)
 // ground, in metres.
 function setCameraHeightValue()
 {
+    //Ask user to input the user's height
+    heightOfUser = Number(prompt("Enter height of the user: "));
+    
+    //Continues to ask for the user's height if it was NaN or negative
+    while (isNaN(heightOfUser) === true || heightOfUser < 0)
+        {
+            heightOfUser = prompt("Enter a positive numeric value for the height: ");
+        }
+    
+    //Pop-up message specifying the height of user
+    cameraVideoPage.displayMessage("Height of user: " + heightOfUser + " metres", 2000);
     // Step 3: Set camera height
     // check if input is a number and is positive
     // display on screen using the displayMessage method
